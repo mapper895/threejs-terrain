@@ -3,6 +3,12 @@ import * as THREE from "three";
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from "dat.gui";
 
+// Texture Loader
+const loader = new THREE.TextureLoader();
+const height = loader.load("height.jpg");
+const texture = loader.load("./texture.jpg");
+const alpha = loader.load("./alpha.png");
+
 // Debug
 const gui = new dat.GUI();
 
@@ -18,6 +24,12 @@ const geometry = new THREE.PlaneBufferGeometry(3, 3, 64, 64);
 // Materials
 const material = new THREE.MeshStandardMaterial({
   color: "gray",
+  map: texture,
+  displacementMap: height,
+  displacementScale: 0.6,
+  alphaMap: alpha,
+  transparent: true,
+  depthTest: false,
 });
 
 // Mesh
@@ -29,7 +41,7 @@ gui.add(plane.rotation, "x").min(0).max(10);
 
 // Lights
 
-const pointLight = new THREE.PointLight(0xffffff, 2);
+const pointLight = new THREE.PointLight(0x00b3ff, 2);
 pointLight.position.x = 2;
 pointLight.position.y = 3;
 pointLight.position.z = 4;
@@ -105,6 +117,8 @@ const tick = () => {
 
   // Update objects
   //   sphere.rotation.y = 0.5 * elapsedTime;
+
+  plane.rotation.z = 0.5 * elapsedTime;
 
   // Update Orbital Controls
   // controls.update()
